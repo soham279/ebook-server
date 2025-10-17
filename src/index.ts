@@ -1,5 +1,17 @@
-import { add } from '@/test/math'
+import express from "express";
+import { CLIENT_RENEG_LIMIT } from "tls";
 
-const a = 5
-const b = 2
-console.log("This is the final result: ", add(a , b))
+const app = express();
+
+const port = process.env.PORT || 8989
+
+app.get('/', (request, response) => {
+	response.send("<h1>Hello This is our App!</h1>")
+})
+app.get('/login', (request, response) => {
+	response.send("<h1>Hello This is our Login Page!</h1>")
+})
+
+app.listen(port, () => {
+  console.log(`The application is running on port http://localhost:${port}`);
+});
