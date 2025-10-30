@@ -1,16 +1,30 @@
-import express from "express";
-import { CLIENT_RENEG_LIMIT } from "tls";
+import 'express-async-error';
+import "@/db/connect";
+import express, { ErrorRequestHandler } from "express";
+import authRouter from "./routes/auth";
+import { errorHandler } from "./middlewares/error";
 
 const app = express();
 
-const port = process.env.PORT || 8989
+// app.use((req, res, next) => {
+//   req.on("data", (chunk) => {
+//     req.body = JSON.parse(chunk);
+//     next();
+//   });
+// });
 
-app.get('/', (request, response) => {
-	response.send("<h1>Hello This is our App!</h1>")
-})
-app.get('/login', (request, response) => {
-	response.send("<h1>Hello This is our Login Page!</h1>")
-})
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
+app.use("/auth", authRouter);
+app.post("/test", (req, res) => {
+  console.log(req.body);
+  res.json({});
+});
+
+app.use(errorHandler);
+
+const port = process.env.PORT || 8989;
 
 app.listen(port, () => {
   console.log(`The application is running on port http://localhost:${port}`);
